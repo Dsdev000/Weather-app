@@ -1,0 +1,16 @@
+# Used by pip to install required python packages
+# Usage: pip install -r requirements.txt
+
+Flask
+Flask-Assistant
+Flask-WTF
+Flask-Uploads
+flask-csrf
+Flask-Mail
+passlib
+WTForms
+Werkzeug==0.14.0
+
+
+
+

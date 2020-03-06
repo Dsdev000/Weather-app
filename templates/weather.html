@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+
+
+
+
+<div class="row SignUp"> 
+    <h1><center>Weather app </center></h1>
+	<div class="col-md-1"></div>
+	<div class="col-md-10  center-block weather_main_panel" style="box-shadow: none;">
+	 	<div class="panel panel-success weather_panel" style="border-radius: 0.5px">
+	 	 <div class="panel-heading bg-white"> 
+    
+      <form method="POST">
+        <div class="input-group">
+         <input type="search" class="form-control all-border" placeholder="Search Place" style="z-index: 0;" name="search_place">
+         <span class="input-group-btn">
+          <button class="btn btn-default all-border glyphicon glyphicon-search " type="submit" style="margin-top: -1px;z-index: 0;"></button> 
+        </span>
+           </div><!-- /input-group -->  
+     </form>
+     
+	 	 </div>
+
+		<div class="panel-body"> 
+      <address> 
+        <h2 name="search_place_address" id="search_place_address">{{ weather.city }}</h2>
+        </address> 
+        <h4 name="day" id="day">{{ weather.d_t }}</h4><h4 id="description">{{ weather.description }}</h4><br>
+         <div class="row clearfix">
+		  <div class="pull-left col-md-3 col-sm-3 col-xs-12"><sup style="font-size: 15px;">
+      
+               <!-- <input id="faren" type="radio" name="temp" value="1" /> -->
+                  <label for="faren" id="f" class="get_temp">°F</label>
+                  |
+                 
+                  <!-- <input id="cel" type="radio" name="temp" value="2" /> -->
+                  <label for="cel" id="c" class="get_temp">°C</label>
+                  
+                 
+      </sup>
+      <img src="https://openweathermap.org/img/w/{{ weather.icon }}.png" class="img-rounded" name="wheather_img" id="weather_img">  
+      <h3 class="pull-left" name="weather" id="weather">{{ weather.temperature }}&nbsp;</h3>
+      </div>
+
+      <div class="col-md-4 pull-right col-sm-4 col-xs-12 m-0 p-0" >
+        <p name="percipitation" id="pressure"  style="font-size: 16px;">Pressure : {{ weather.pressure }}</p>
+        <p name="Humidity" id="humidity" style="font-size: 16px;">Humidity : {{ weather.humidity }}</p>
+        <p name="wind" id="wind" style="font-size: 16px;">Wind : {{ weather.wind }}</p>
+       <!-- <div class="btn-group" data-toggle="buttons" style="z-index: 0;"> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Temprature"> Temprature </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Percipitation"> Percipitation </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Wind"> Wind </label> </div>-->
+      </div>
+      </div>
+      <br>
+
+       <div class="btn-group ml-2" data-toggle="buttons" style="z-index: 0;">
+
+        {% for weather_btn in weather %}
+        <label class="btn btn-default all-border btn-lg btn-weather"> <input type="radio" name="options"  id="{{weather_btn.d_t}}" > {{ weather_btn.d_t }} <br><img src="https://openweathermap.org/img/w/{{ weather_btn.icon }}.png" class="img-rounded">
+          <br>
+          <p>{{ weather_btn.temperature }}&nbsp;<sup></sup></p>
+        
+        </label>
+          
+           {% endfor %}
+           
+           
+             </div>
+		</div>
+    <script>
+   $(document).ready(function()
+  {
+ $(".btn-group .btn-weather:nth-child(1)").addClass("active");
+
+   $('#search_place_address').html("{{weather[0].city}}");
+           $('#day').html("{{weather[0].d_t}}");
+           $('#description').html("{{weather[0].description}}");
+           $('#weather_img').attr('src','https://openweathermap.org/img/w/{{ weather[0].icon }}.png');
+           $('#weather').html("{{weather[0].temperature}}");
+           $('#pressure').html("Pressure : {{weather[0].pressure}} millibars");
+           $('#humidity').html("Humidity : {{weather[0].humidity}}<small>%</small>");
+           $('#wind').html("Wind :  {{weather[0].wind}} mph"); 
+  });
+</script>
+    {% for weather_btn in weather %}
+<script src="{{ url_for('static',filename='js/weather_d_js.js') }}">
+  
+</script>
+{% endfor %} 
+		</div>
+	 </div> 
+	 <div class="col-md-1"></div>
+</div>
+
+
+{% for weather_btn in weather %}
+<script>
+   $("input[type='radio']").change(function (){
+       
+          if("{{weather_btn.d_t}}"==this.id)
+          { 
+           $('#search_place_address').html("{{weather_btn.city}}");
+           $('#day').html("{{weather_btn.d_t}}");
+           $('#description').html("{{weather_btn.description}}");
+           $('#weather_img').attr('src','https://openweathermap.org/img/w/{{ weather_btn.icon }}.png');
+           $('#weather').html("{{weather_btn.temperature}}<sup><sup>");
+           $('#pressure').html("Pressure : {{weather_btn.pressure}} millibars");
+           $('#humidity').html("Humidity : {{weather_btn.humidity}}<small>%</small>");
+           $('#wind').html("Wind :  {{weather_btn.wind}} mph");
+           }
+         
+    });
+</script>
+<script src="{{ url_for('static',filename='js/weather_d_js.js') }}">
+  
+</script>
+{% endfor %}
+
+{% endblock %}

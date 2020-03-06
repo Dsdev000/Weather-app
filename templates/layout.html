@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta icon="utf-8">
+  
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/new_style.css') }}?q=1280549780">
+
+
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}?q=1280549780">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Text|Lato|Mukta+Vaani" >
+  
+
+
+    <script  src="{{ url_for('static',filename='js/jquery-3.3.1.min.js') }}"></script>
+
+   
+
+	
+
+	<title>Weather app</title>
+</head>
+<body>
+<div class="container-fluid">
+   <div class="speech-toggler-main color-grey" style="float: right;" >
+  <div class="speech-toggler fa fa-microphone color-green"></div>
+</div>
+</div>
+  <div class="container-fluid">
+
+    {% block body %}{% endblock %}
+ 
+	</div>
+	
+	
+
+
+<span id="speech"></span>
+<span id="interim"></span>
+
+<!-- Footer -->
+
+
+  <audio >
+        <source src="/static/speech.ogg" type="audio/mpeg">
+        
+        Your browser does not support the HTML5 audio element.
+    </audio>
+  <!-- Footer -->
+    <script src="{{ url_for('static',filename='js/ckin.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap-notify.min.js') }}"></script>
+ 
+    <script>
+      $(document).ready(function() {
+          
+
+          $('.thumbnail-product').hide();
+           $('.caption').children('.product_lb').hide();
+    $('a').children('.product_lb').hide();
+   
+    $('.caption ').children('.product_des').hide();
+  
+    
+
+     console.log($('.linear-background').css('width'));
+
+      
+    
+    $(window).scroll(function()
+    {
+          var scrollpos=$(window).scrollTop();
+          console.log(scrollpos);
+          var obj_pos=$('.thumbnail').scrollTop();
+          console.log(obj_pos);
+          var o_p=obj_pos;
+
+           if ($(this).scrollTop())
+          {
+         
+          setInterval(function()
+      { 
+        $('.linear-background').remove();
+        $('.linear-product-lb').remove();
+        $('.linear-product-des').remove();
+    
+          $('.thumbnail-product').fadeIn('slow'); 
+        $('.product_lb').fadeIn('slow');
+        $('.product_des').fadeIn('slow');
+        $('.product_btn').fadeIn('slow');
+      },1000);
+      }
+    });
+
+         
+
+
+ 
+
+      function upgrade() {
+      alert('Please upgrade to Google Chrome for best possible experience.');
+    }
+    window.onload = function() {
+      if (!(window.webkitSpeechRecognition) && !(window.speechRecognition)) {
+        upgrade();
+      } else {
+
+        var speech = new webkitSpeechRecognition() || speechRecognition();
+        speech.lang = 'en-US';
+        speech.continuous = true;
+        speech.interimResults = true;
+        var recognizing,
+            final_transcript,
+            interim_transcript,
+            transcription = document.getElementById('speech'),
+            interim_span = document.getElementById('interim');
+        interim_span.style.opacity = '0.5';
+        function reset() {
+          transcription.innerHTML = '';
+          interim_span.innerHTML = '';
+          recognizing = false;
+        }
+        document.onkeydown = function(e) {
+          if (e.key === "q") {
+            if (!recognizing) {
+              speech.start();
+            }
+          }
+        };
+        document.onkeyup = function(e) {
+          if (e.key === "q") {
+            if (recognizing) {
+              speech.stop();
+              reset();
+            }
+          }
+        };
+        speech.onstart = function() {
+            // When recognition begins
+            recognizing = true;
+            console.log("Speaking!");
+        };
+        
+         $('.speech-toggler-main').click(function()
+            {
+                $(this).toggleClass('color-grey color-red');
+                $('.speech-toggler').toggleClass('color-green color-white');
+             
+               if($(this).is('.color-red'))
+               {
+               
+                 speech.start();
+                  $('audio')[0].play();
+               
+               }
+               else
+               {
+               
+                  speech.stop();
+                  $('audio')[0].play();
+                   
+               }
+            });
+        speech.onresult = function(event) {
+            // When recognition produces result
+            interim_transcript = '';
+            final_transcript = '';
+            // main for loop for final and interim results
+            for (var i = event.resultIndex; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                final_transcript += event.results[i][0].transcript;
+              } else {
+                interim_transcript += event.results[i][0].transcript;
+              }
+            }
+            transcription.innerHTML = final_transcript;
+            interim_span.innerHTML = interim_transcript;
+            var makeArray = final_transcript.split(' ');
+            var bColor = makeArray.splice(-3);
+            // change background color
+            if ((/^change /g.test(final_transcript)) && (/background colour/g.test(final_transcript))) {
+              if (bColor[0] === 'to') {
+                document.body.style.backgroundColor = bColor[1] + bColor[2];
+              } else if (bColor[1] === 'to') {
+                document.body.style.backgroundColor = bColor[2];
+              } else {
+                document.body.style.backgroundColor = bColor[0] + bColor[1] + bColor[2];
+              }
+            }
+            if(final_transcript == 'go to Products' || final_transcript == 'go to products' || final_transcript == "show me a products" || final_transcript == "show me Products" || final_transcript == 'Products' || final_transcript == 'products')
+            {
+              window.location.href = '/products';
+            }
+            else if(final_transcript == 'go to Crops' || final_transcript == 'go to crops' || final_transcript == "show me a crops" || final_transcript == "show me Crops" || final_transcript == 'Crops' || final_transcript == 'crops')
+            {
+              window.location.href = '/Crops';
+            }
+            else if(final_transcript == 'go to Weather info' || final_transcript == 'go to weather info' || final_transcript == "show me a weather info" || final_transcript == "show me Weather info" || final_transcript == 'Weather info' || final_transcript == 'weather info')
+            {
+              window.location.href = '/weather';
+            }
+            else if(final_transcript == 'go to Farming info' || final_transcript == 'go to farming info' || final_transcript == "show me a farming info" || final_transcript == "show me Farming info" || final_transcript == 'Farming info' || final_transcript == 'farming info')
+            {
+              window.location.href = '/Farming-info';
+            }
+            else if(final_transcript == 'go to E learn' || final_transcript == 'go to E learn' || final_transcript == "show me a E learn" || final_transcript == "show me E learn" || final_transcript == 'E learn' || final_transcript == 'E learn')
+            {
+              window.location.href = '/E-learn';
+            }
+            else if(final_transcript == 'go to Ask questions' || final_transcript == 'go to ask questions' || final_transcript == "show me a ask questions" || final_transcript == "show me Ask questions" || final_transcript == 'Ask questions' || final_transcript == 'ask questions')
+            {
+              window.location.href = '/ask-questions';
+            }
+        };
+        speech.onerror = function(event) {
+            // When recognition fails or error occurs
+            console.error(event.error); 
+        };
+        speech.onend = function() {
+            // When recognition ends
+            console.log("Hold 'Q' to begin speech.");
+            reset();
+        };
+      }
+    };
+   });
+
+    </script>
+</body>
+</html>
