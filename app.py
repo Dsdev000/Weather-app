@@ -15,5 +15,4 @@ app=Flask(__name__)
 from views import *
 
 if __name__=='__main__':
-    app.secret_key='any key'
-    app.run(debug = True, threaded=True)
+    app.run(debug = True)
