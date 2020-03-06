@@ -9,7 +9,7 @@ flask-csrf
 Flask-Mail
 passlib
 WTForms
-Werkzeug==0.14.0
+
 
 
 
