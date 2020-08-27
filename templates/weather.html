@@ -26,9 +26,9 @@
 
 		<div class="panel-body"> 
       <address> 
-        <h2 name="search_place_address" id="search_place_address">{{ weather.city }}</h2>
+        <h2 name="search_place_address" id="search_place_address">{{ weather[0].city }}</h2>
         </address> 
-        <h4 name="day" id="day">{{ weather.d_t }}</h4><h4 id="description">{{ weather.description }}</h4><br>
+        <h4 name="day" id="day">{{ weather[0].d_t }}</h4><h4 id="description">{{ weather[0].description }}</h4><br>
          <div class="row clearfix">
 		  <div class="pull-left col-md-3 col-sm-3 col-xs-12"><sup style="font-size: 15px;">
       
@@ -41,14 +41,14 @@
                   
                  
       </sup>
-      <img src="https://openweathermap.org/img/w/{{ weather.icon }}.png" class="img-rounded" name="wheather_img" id="weather_img">  
-      <h3 class="pull-left" name="weather" id="weather">{{ weather.temperature }}&nbsp;</h3>
+      <img src="https://openweathermap.org/img/w/{{ weather[0].icon }}.png" class="img-rounded" name="wheather_img" id="weather_img">  
+      <h3 class="pull-left" name="weather" id="weather">{{ weather[0].temperature }}&nbsp;</h3>
       </div>
 
       <div class="col-md-4 pull-right col-sm-4 col-xs-12 m-0 p-0" >
-        <p name="percipitation" id="pressure"  style="font-size: 16px;">Pressure : {{ weather.pressure }}</p>
-        <p name="Humidity" id="humidity" style="font-size: 16px;">Humidity : {{ weather.humidity }}</p>
-        <p name="wind" id="wind" style="font-size: 16px;">Wind : {{ weather.wind }}</p>
+        <p name="percipitation" id="pressure"  style="font-size: 16px;">Pressure : {{ weather[0].pressure }}</p>
+        <p name="Humidity" id="humidity" style="font-size: 16px;">Humidity : {{ weather[0].humidity }}</p>
+        <p name="wind" id="wind" style="font-size: 16px;">Wind : {{ weather[0].wind }}</p>
        <!-- <div class="btn-group" data-toggle="buttons" style="z-index: 0;"> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Temprature"> Temprature </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Percipitation"> Percipitation </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Wind"> Wind </label> </div>-->
       </div>
       </div>
@@ -65,29 +65,24 @@
           
            {% endfor %}
            
-           
-             </div>
+            </div>
 		</div>
     <script>
    $(document).ready(function()
   {
  $(".btn-group .btn-weather:nth-child(1)").addClass("active");
 
-   $('#search_place_address').html("{{weather[0].city}}");
-           $('#day').html("{{weather[0].d_t}}");
-           $('#description').html("{{weather[0].description}}");
-           $('#weather_img').attr('src','https://openweathermap.org/img/w/{{ weather[0].icon }}.png');
-           $('#weather').html("{{weather[0].temperature}}");
-           $('#pressure').html("Pressure : {{weather[0].pressure}} millibars");
-           $('#humidity').html("Humidity : {{weather[0].humidity}}<small>%</small>");
-           $('#wind').html("Wind :  {{weather[0].wind}} mph"); 
+   // $('#search_place_address').html("{{weather[0].city}}");
+   //         $('#day').html("{{weather[0].d_t}}");
+   //         $('#description').html("{{weather[0].description}}");
+   //         $('#weather_img').attr('src','https://openweathermap.org/img/w/{{ weather[0].icon }}.png');
+   //         $('#weather').html("{{weather[0].temperature}}");
+   //         $('#pressure').html("Pressure : {{weather[0].pressure}} millibars");
+   //         $('#humidity').html("Humidity : {{weather[0].humidity}}<small>%</small>");
+   //         $('#wind').html("Wind :  {{weather[0].wind}} mph"); 
   });
 </script>
-    {% for weather_btn in weather %}
-<script src="{{ url_for('static',filename='js/weather_d_js.js') }}">
   
-</script>
-{% endfor %} 
 		</div>
 	 </div> 
 	 <div class="col-md-1"></div>
@@ -112,9 +107,7 @@
          
     });
 </script>
-<script src="{{ url_for('static',filename='js/weather_d_js.js') }}">
-  
-</script>
+
 {% endfor %}
 
 {% endblock %}
